@@ -61,7 +61,7 @@
                                 {% endif %}
                             </span>
                             <!-- 댓글 추천 기능-->
-                             <a href="{% url 'pybo:comment_vote_question' comment.id  %}" class="recommend small">추천</a>
+                             <a href="#" data-uri=" {% url 'pybo:comment_vote_question' comment.id  %}" class="recommend small">추천</a>
                             <span>
                                 {% if comment.modify_count %}
                                     (수정횟수:{{ comment.modify_count }})
@@ -141,7 +141,7 @@
                                 {% endif %}
                             </span>
 
-                            <a href="{% url 'pybo:comment_vote_answer' comment.id  %}" class="recommend small">추천</a>
+                            <a href="#" data-uri="{% url 'pybo:comment_vote_answer' comment.id  %}" class="recommend small">추천</a>
                             {% if request.user == comment.author %}
                             <a href="{% url 'pybo:comment_modify_answer' comment.id  %}" class="small">수정</a>,
                             <a href="#" class="small delete"
