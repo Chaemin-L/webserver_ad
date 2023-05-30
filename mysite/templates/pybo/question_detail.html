@@ -60,18 +60,13 @@
                                 (수정:{{ comment.modify_date }})
                                 {% endif %}
                             </span>
-<<<<<<< HEAD
-
                             <!-- 댓글 추천 기능-->
                              <a href="{% url 'pybo:comment_vote_question' comment.id  %}" class="recommend small">추천</a>
-
-=======
                             <span>
                                 {% if comment.modify_count %}
                                     (수정횟수:{{ comment.modify_count }})
                                 {% endif %}
                             </span>
->>>>>>> 897d0a310684f333e957b5298ac52d9ba593febb
                             {% if request.user == comment.author %}
                             <a href="{% url 'pybo:comment_modify_question' comment.id  %}" class="small"> 수정</a>,
                             <a href="#" class="small delete"
@@ -145,11 +140,8 @@
                                 (수정횟수:{{ comment.modify_count }})
                                 {% endif %}
                             </span>
-<<<<<<< HEAD
 
                             <a href="{% url 'pybo:comment_vote_answer' comment.id  %}" class="recommend small">추천</a>
-=======
->>>>>>> 897d0a310684f333e957b5298ac52d9ba593febb
                             {% if request.user == comment.author %}
                             <a href="{% url 'pybo:comment_modify_answer' comment.id  %}" class="small">수정</a>,
                             <a href="#" class="small delete"

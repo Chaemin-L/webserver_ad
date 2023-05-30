@@ -65,8 +65,4 @@ def comment_delete_question(request, comment_id):
         return redirect('pybo:detail', question_id=comment.question_id)
     else:
         comment.delete()
-<<<<<<< HEAD
     return redirect('pybo:detail', question_id=comment.question_id)
-=======
-    return redirect('pybo:detail', question_id=comment.question_id)
->>>>>>> 897d0a310684f333e957b5298ac52d9ba593febb
