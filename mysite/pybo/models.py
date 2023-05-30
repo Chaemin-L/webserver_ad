@@ -31,3 +31,4 @@ class Comment(models.Model):
     modify_count = models.IntegerField(null=True, blank=True, default=0)
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete=models.CASCADE)
+    voter = models.ManyToManyField(User, related_name='voter_comment')

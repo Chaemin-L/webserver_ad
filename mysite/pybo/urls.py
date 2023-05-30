@@ -30,4 +30,6 @@ urlpatterns = [
     # vote_views.py
     path('vote/question/<int:question_id>/', vote_views.vote_question, name='vote_question'),
     path('vote/answer/<int:answer_id>/', vote_views.vote_answer, name='vote_answer'),
+    path('comment/vote/question/<int:comment_id>/', vote_views.comment_vote_question, name='comment_vote_question'),
+    path('comment/vote/answer/<int:comment_id>/', vote_views.comment_vote_answer, name='comment_vote_answer')
 ]
