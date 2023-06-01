@@ -13,6 +13,7 @@ def index(request):
     page = request.GET.get('page', '1')  # 페이지
     kw = request.GET.get('kw', '')  # 검색어
     so = request.GET.get('so', 'recent')  # 정렬기준
+    #so_comment = request.GET.get('so_comment', 'recent')  # 정렬기준
 
     # 정렬
     if so == 'recommend':
@@ -21,13 +22,6 @@ def index(request):
         question_list = Question.objects.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
     else:  # recent
         question_list = Question.objects.order_by('-create_date')
-
-    if so == 'recommend':
-        comment_list = Comment.objects.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
-    else:  # recent
-        comment_list = Comment.objects.order_by('-create_date')
-
-
 
     # 검색
     if kw:
@@ -41,15 +35,9 @@ def index(request):
     # 페이징처리
     paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-
+    
     context = {'question_list': page_obj, 'page': page, 'kw': kw, 'so': so}  # <------ so 추가
     return render(request, 'pybo/question_list.html', context)
-
-    paginator_comment = Paginator(comment_list, 5)
-    page_obj_comment = paginator_comment.get_page(page)
-
-    context_comment = {'comment_list': page_obj_comment, 'page_comment': page, 'so_comment': so}
-    return render(request, 'pybo/question_detail.html', context_comment)
 
 
 def detail(request, question_id):
@@ -57,5 +45,21 @@ def detail(request, question_id):
     pybo 내용 출력
     """
     question = get_object_or_404(Question, pk=question_id)
-    context = {'question': question}
+    comment_list = Comment.objects.filter(question_id=question_id);
+
+    page = request.GET.get('page', '1')  # 페이지
+    so_comment = request.GET.get('so_comment', 'recent')  # 정렬기준
+
+    # 정렬
+    if so_comment == 'recommend':
+        comment_list = comment_list.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
+    elif so_comment == 'popular':
+        comment_list = comment_list.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
+    else:  # recent
+        comment_list = comment_list.order_by('-create_date')
+
+    paginator_comment = Paginator(comment_list, 5)
+    page_obj_comment = paginator_comment.get_page(page)
+
+    context = {'question': question, 'comment_list':page_obj_comment, 'page': page, 'so_comment': so_comment}
     return render(request, 'pybo/question_detail.html', context)

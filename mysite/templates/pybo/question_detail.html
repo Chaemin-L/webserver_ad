@@ -57,7 +57,7 @@
                         <!-- 정렬 끝-->
                     {% if question.comment_set.count > 0 %}
                     <div class="mt-3">
-                    {% for comment in question.comment_set.all %}
+                    {% for comment in comment_list %}
                         <a name="comment_{{ comment.id }}"></a>
                         <div class="comment py-2 text-muted">
                             <span>
@@ -194,9 +194,9 @@
 
                             <a href="#" data-uri="{% url 'pybo:comment_vote_answer' comment.id  %}" class="recommend small">추천</a>
                             {% if request.user == comment.author %}
-                            <a href="{% url 'pybo:comment_modify_answer' comment.id  %}" class="small">수정</a>,
-                            <a href="#" class="small delete"
-                               data-uri="{% url 'pybo:comment_delete_answer' comment.id  %}">삭제</a>
+                                <a href="{% url 'pybo:comment_modify_answer' comment.id  %}" class="small">수정</a>,
+                                <a href="#" class="small delete"
+                                data-uri="{% url 'pybo:comment_delete_answer' comment.id  %}">삭제</a>
                             {% endif %}
                         </div>
                     {% endfor %}
@@ -230,10 +230,9 @@
         <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
 </div>
-<form id="searchForm" method="get" action="{% url 'index' %}">
-    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:"" }}">
-    <input type="hidden" id="page_comment" name="page" value="{{ page_comment }}">
-    <input type="hidden" id="so_comment" name="so" value="{{ so_comment }}">
+<form id="searchForm" method="get" action="{% url 'pybo:detail' question.id %}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so_comment" name="so_comment" value="{{ so_comment }}">
 </form>
 {% endblock %}
 {% block script %}
@@ -255,14 +254,8 @@ $(document).ready(function(){
         $("#searchForm").submit();
     });
 
-    $("#btn_search").on('click', function() {
-        $("#kw").val($(".kw").val());
-        $("#page").val(1);  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
-        $("#searchForm").submit();
-    });
-
-    $(".so").on('change', function() {
-        $("#so").val($(this).val());
+    $(".so_comment").on('change', function() {
+        $("#so_comment").val($(this).val());
         $("#page").val(1);
         $("#searchForm").submit();
     });
