@@ -24,8 +24,6 @@ def index(request):
 
     if so == 'recommend':
         comment_list = Comment.objects.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
-    elif so == 'popular':
-        comment_list = Comment.objects.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
     else:  # recent
         comment_list = Comment.objects.order_by('-create_date')
 
@@ -47,8 +45,11 @@ def index(request):
     context = {'question_list': page_obj, 'page': page, 'kw': kw, 'so': so}  # <------ so 추가
     return render(request, 'pybo/question_list.html', context)
 
-    context = {'comment_list': page_obj, 'page': page, 'kw': kw, 'so': so}
-    return render(request, 'pybo/comment_list.html', context)
+    paginator_comment = Paginator(comment_list, 5)
+    page_obj_comment = paginator_comment.get_page(page)
+
+    context_comment = {'comment_list': page_obj_comment, 'page_comment': page, 'so_comment': so}
+    return render(request, 'pybo/question_detail.html', context_comment)
 
 
 def detail(request, question_id):
