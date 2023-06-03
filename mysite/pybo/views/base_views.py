@@ -52,8 +52,6 @@ def detail(request, question_id):
     # 정렬
     if so_comment == 'recommend':
         comment_list = comment_list.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
-    elif so_comment == 'popular':
-        comment_list = comment_list.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
     else:  # recent
         comment_list = comment_list.order_by('-create_date')
 
